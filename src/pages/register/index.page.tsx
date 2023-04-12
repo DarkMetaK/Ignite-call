@@ -4,26 +4,24 @@ import { Button, Heading, MultiStep, Text, TextInput } from '@ignite-ui/react'
 import { FormError, Header, RegisterContainer, RegisterForm } from './styles'
 import { ArrowRight } from 'phosphor-react'
 import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import * as yup from 'yup'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 import { api } from '@/lib/axios'
 import { AxiosError } from 'axios'
 
-const registerFormSchema = yup
-  .object({
-    username: yup
-      .string()
-      .required('Esse campo é obrigatório')
-      .min(3, 'O usuário deve ter pelo menos 3 caracteres.')
-      .matches(/^([a-z\\-]+)$/i, 'O usuário pode ter apenas letras e hifens')
-      .transform((username) => username.toLowerCase()),
-    name: yup
-      .string()
-      .required('Esse campo é obrigatório')
-      .min(3, 'O nome deve ter pelo menos 3 caracteres.'),
-  })
-  .required()
-type FormData = yup.InferType<typeof registerFormSchema>
+const registerFormSchema = z.object({
+  username: z
+    .string()
+    .min(3, { message: 'O usuário precisa ter pelo menos 3 letras.' })
+    .regex(/^([a-z\\-]+)$/i, {
+      message: 'O usuário pode ter apenas letras e hifens.',
+    })
+    .transform((username) => username.toLowerCase()),
+  name: z
+    .string()
+    .min(3, { message: 'O nome precisa ter pelo menos 3 letras.' }),
+})
+type FormData = z.infer<typeof registerFormSchema>
 
 export default function Register() {
   const {
@@ -32,7 +30,7 @@ export default function Register() {
     setValue,
     formState: { errors, isSubmitting, isValid },
   } = useForm<FormData>({
-    resolver: yupResolver(registerFormSchema),
+    resolver: zodResolver(registerFormSchema),
     mode: 'onChange',
   })
 

@@ -2,21 +2,20 @@ import { useRouter } from 'next/router'
 import { Button, Text, TextInput } from '@ignite-ui/react'
 import { ArrowRight } from 'phosphor-react'
 import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import * as yup from 'yup'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
 import { ClaimUserNameFormContainer, FormAnnotation } from './styles'
 
-const claimUsernameFormSchema = yup
+const claimUsernameFormSchema = z
   .object({
-    username: yup
+    username: z
       .string()
-      .required('Esse campo é obrigatório')
       .min(3, 'O usuário deve ter pelo menos 3 caracteres.')
-      .matches(/^([a-z\\-]+)$/i, 'O usuário pode ter apenas letras e hifens')
+      .regex(/^([a-z\\-]+)$/i, 'O usuário pode ter apenas letras e hifens')
       .transform((username) => username.toLowerCase()),
   })
   .required()
-type FormData = yup.InferType<typeof claimUsernameFormSchema>
+type FormData = z.infer<typeof claimUsernameFormSchema>
 
 export function ClaimUsernameForm() {
   const {
@@ -24,7 +23,7 @@ export function ClaimUsernameForm() {
     handleSubmit,
     formState: { errors, isSubmitting, isValid },
   } = useForm<FormData>({
-    resolver: yupResolver(claimUsernameFormSchema),
+    resolver: zodResolver(claimUsernameFormSchema),
     mode: 'onChange',
   })
 

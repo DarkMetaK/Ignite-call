@@ -9,7 +9,7 @@ import { AuthError, ConnectBox, ConnectItem } from './styles'
 // import { api } from '@/lib/axios'
 // import { AxiosError } from 'axios'
 
-export default function Register() {
+export default function ConnectCalendar() {
   const router = useRouter()
   const session = useSession()
 
