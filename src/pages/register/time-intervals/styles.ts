@@ -21,6 +21,12 @@ export const IntervalItem = styled('div', {
   '& + &': {
     borderTop: '1px solid $gray600',
   },
+
+  '@media(max-width: 600px)': {
+    flexDirection: 'column',
+    gap: '$3',
+    alignItems: 'flex-start',
+  },
 })
 
 export const IntervalDay = styled('div', {
