@@ -6,6 +6,7 @@ import {
   TextInput,
   Button,
 } from '@ignite-ui/react'
+import { useRouter } from 'next/router'
 import { ArrowRight } from 'phosphor-react'
 import { useFieldArray, useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -84,6 +85,8 @@ export default function TimeIntervals() {
     },
   })
 
+  const router = useRouter()
+
   const { fields } = useFieldArray({
     control,
     name: 'intervals',
@@ -97,12 +100,13 @@ export default function TimeIntervals() {
     await api.post('/users/time-intervals', {
       intervals,
     })
+    await router.push('/register/update-profile')
   }
 
   return (
     <RegisterContainer>
       <Header>
-        <Heading as="strong">Quase lá</Heading>
+        <Heading as="strong">Defina sua disponibilidade</Heading>
         <Text>
           Defina o intervalo de horários que você está disponível em cada dia da
           semana.
