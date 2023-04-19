@@ -50,13 +50,6 @@ export function CalendarStep() {
     },
   )
 
-  // useEffect(() => {
-  //   if (!selectedDate) {
-  //     return
-  //   }
-
-  // }, [selectedDate, username])
-
   return (
     <CalendarStepContainer isTimePickerOpen={isDateSelected}>
       <Calendar selectedDate={selectedDate} onDateSelected={setSelectedDate} />
